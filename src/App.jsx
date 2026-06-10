@@ -5,13 +5,16 @@ import Dock from './components/Dock';
 import ProjectDetails from './components/ProjectDetails';
 import { projectsData, dockIcons } from './data/projects';
 import { AnimatePresence } from 'framer-motion';
+import CaseStudyWindow from './components/case-studies/CaseStudyWindow';
+import AboutMeWindow from './components/AboutMeWindow';
+import { Hand, MapPin } from 'lucide-react';
 
 // Content for About Me (Notes App)
 function NotesContent() {
   return (
     <div style={{ fontFamily: 'var(--font-sans)', lineHeight: 1.7, color: '#333', padding: '5px' }}>
-      <h2 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '14px', color: '#111' }}>
-        Sudhakar 👋
+      <h2 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '14px', color: '#111', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        Sudhakar <Hand size={20} color="#007aff" />
       </h2>
       <p style={{ marginBottom: '12px', fontSize: '14px' }}>
         I am an elite <strong>UI/UX Designer & Visual Artist</strong> specializing in creating modern, premium digital platforms and user-centric brand identity designs.
@@ -29,7 +32,7 @@ function NotesContent() {
         </ul>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', fontSize: '12px', color: '#666' }}>
-        <span>📍 Tamil Nadu, India</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><MapPin size={12} /> Tamil Nadu, India</span>
         <span>•</span>
         <a href="mailto:sudhakarjk08@gmail.com" style={{ color: '#007aff', textDecoration: 'none' }}>sudhakarjk08@gmail.com</a>
       </div>
@@ -122,6 +125,7 @@ function App() {
   const [openWindows, setOpenWindows] = useState([]);
   const [focusedWindowId, setFocusedWindowId] = useState(null);
   const [zIndexCounter, setZIndexCounter] = useState(10);
+  const [fullScreenProject, setFullScreenProject] = useState(null);
 
   const createWindow = (id, title, content, options = {}) => {
     const existing = openWindows.find(w => w.id === id);
@@ -148,11 +152,35 @@ function App() {
   };
 
   const openProjectWindow = (project) => {
+    const isFeatured = ['nexvora', 'viveha', 'uyircare'].includes(project.id);
+    if (isFeatured) {
+      setFullScreenProject(project.id);
+    } else {
+      createWindow(
+        project.id,
+        `Information about: ${project.title}`,
+        <ProjectDetails project={project} onOpenCaseStudy={openCaseStudyWindow} />,
+        { width: 480 }
+      );
+    }
+  };
+
+  const openCaseStudyWindow = (projectId) => {
+    const project = projectsData.find(p => p.id === projectId);
     createWindow(
-      project.id,
-      `Information about: ${project.title}`,
-      <ProjectDetails project={project} />,
-      { width: 480 }
+      `case-study-${projectId}`,
+      `Case Study: ${project.title}`,
+      <CaseStudyWindow projectId={projectId} />,
+      { width: 800, initialX: '20%', initialY: '5%' }
+    );
+  };
+
+  const openAboutMeWindow = () => {
+    createWindow(
+      'aboutme-window',
+      'About Sudhakar & Resume',
+      <AboutMeWindow />,
+      { width: 560, initialX: '28%', initialY: '10%' }
     );
   };
 
@@ -174,6 +202,10 @@ function App() {
         content = <PhotosContent />;
         title = 'Photos — Visual Portfolio';
         width = 540;
+      } else if (item.content === 'aboutme') {
+        content = <AboutMeWindow />;
+        title = 'About Sudhakar & Resume';
+        width = 560;
       }
 
       createWindow(`dock-${item.id}`, title, content, { width, initialX: '30%', initialY: '12%' });
@@ -220,6 +252,7 @@ function App() {
       <DesktopIcons
         projects={projectsData}
         onOpenWindow={openProjectWindow}
+        onOpenAboutMe={openAboutMeWindow}
       />
 
       <AnimatePresence>
@@ -234,6 +267,32 @@ function App() {
           />
         ))}
       </AnimatePresence>
+
+      {/* Full Screen Mode */}
+      {fullScreenProject && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'white',
+          zIndex: 99999,
+          overflowY: 'auto'
+        }}>
+          <button 
+            onClick={() => setFullScreenProject(null)}
+            style={{
+              position: 'fixed', top: 20, right: 30, zIndex: 100000,
+              background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: '50%',
+              width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: '#333'
+            }}
+          >
+            <span style={{ fontSize: 28, lineHeight: 1 }}>×</span>
+          </button>
+          <div style={{ padding: '40px 20px', maxWidth: 900, margin: '0 auto' }}>
+             <CaseStudyWindow projectId={fullScreenProject} />
+          </div>
+        </div>
+      )}
 
       <Dock
         items={dockIcons}

@@ -183,6 +183,21 @@ const icons = {
       </g>
     </svg>
   ),
+
+  aboutme: () => (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',height:'100%'}}>
+      <defs>
+        <linearGradient id="aboutmeBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#00c6ff"/>
+          <stop offset="100%" stopColor="#007aff"/>
+        </linearGradient>
+      </defs>
+      <rect width="100" height="100" rx="22" fill="url(#aboutmeBg)"/>
+      <circle cx="50" cy="38" r="16" fill="white" opacity="0.95"/>
+      <path d="M22 80 C22 62 34 58 50 58 C66 58 78 62 78 80 Z" fill="white" opacity="0.95"/>
+      <circle cx="50" cy="50" r="44" fill="none" stroke="white" strokeWidth="2.5" opacity="0.3"/>
+    </svg>
+  ),
 };
 
 export default function DockIcon({ type }) {

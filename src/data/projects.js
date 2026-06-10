@@ -218,6 +218,13 @@ export const dockIcons = [
     action: 'home',
   },
   {
+    id: 'aboutme',
+    name: 'About Me',
+    iconType: 'aboutme',
+    action: 'window',
+    content: 'aboutme',
+  },
+  {
     id: 'Github',
     name: 'Github',
     iconType: 'Github',

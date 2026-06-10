@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProjectDetails({ project }) {
+export default function ProjectDetails({ project, onOpenCaseStudy }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
 
@@ -41,6 +41,44 @@ export default function ProjectDetails({ project }) {
           {project.description}
         </p>
       </div>
+
+      {/* Interactive Case Study Button */}
+      {onOpenCaseStudy && ['uyircare', 'viveha', 'nexvora'].includes(project.id) && (
+        <button
+          onClick={() => onOpenCaseStudy(project.id)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            width: '100%',
+            padding: '12px 16px',
+            background: 'linear-gradient(135deg, #007aff 0%, #0056b3 100%)',
+            border: 'none',
+            borderRadius: '12px',
+            color: 'white',
+            fontWeight: 700,
+            fontSize: '14px',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 4px 15px rgba(0, 122, 255, 0.25)',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, #0062cc 0%, #004499 100%)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, #007aff 0%, #0056b3 100%)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </svg>
+          Read Premium Interactive Case Study →
+        </button>
+      )}
 
       {/* Key Highlights */}
       {project.highlights && project.highlights.length > 0 && (

@@ -7,28 +7,7 @@ export default function Dock({ items, onIconClick }) {
 
   return (
     <>
-      {/* macOS-style menu bar at very bottom */}
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '28px',
-        background: 'rgba(200, 200, 220, 0.35)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderTop: '1px solid rgba(255,255,255,0.25)',
-        zIndex: 999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '11px',
-        color: 'rgba(0,0,0,0.5)',
-        fontWeight: 500,
-        letterSpacing: '0.3px',
-      }}>
-        Sudhakar · UI/UX Designer & Visual Artist
-      </div>
+      {/* Footer text removed as requested */}
 
       {/* Dock */}
       <div
